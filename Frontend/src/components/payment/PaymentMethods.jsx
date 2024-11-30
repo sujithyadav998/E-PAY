@@ -4,8 +4,8 @@ import { CreditCard } from "./CreditCard";
 import { VodafoneCash } from "./VodafoneCash";
 
 const paymentMethods = [
-  { id: "vodafoneCash", title: "Vodafone Cash" },
-  { id: "credit-card", title: "Credit card" },
+  { id: "vodafoneCash", title: "Bank" },
+  { id: "credit-card", title: "Debit card" },
 ];
 
 export const PaymentMethods = ({ title }) => {

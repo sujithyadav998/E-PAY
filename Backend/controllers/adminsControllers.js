@@ -41,6 +41,7 @@ const adminLogin = async (req, res) => {
   if (!req.body.email || !req.body.password)
     return res.status(404).send("empty body request");
   const { email, password } = req.body;
+
   let admin;
   try {
     admin = await Admin.findOne({ email });
@@ -55,9 +56,11 @@ const adminLogin = async (req, res) => {
         token: generateAdminsToken(admin.id, admin.email, admin.role),
       });
     } else {
+      console.log("test")
       return res.status(404).send("Wrong Credintials - wrong password");
     }
   } catch (error) {
+    console.log(error);
     if (!admin || !isCorrectPassword) {
       return res
         .status(404)
@@ -100,29 +103,30 @@ const createAdmin = async (req, res) => {
 //@Access >>>> Public(Use Postman/Thunder client/Rest Client)
 
 // IMPORTANT:- You NEED to Comment/remove This feature after creating the first owner
-// const createFirstAdmin = async (req, res) => {
-//   try {
-//     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-//     const admin = await Admin.create({
-//       admin_name: req.body.name,
-//       email: req.body.email,
-//       password: hashedPassword,
-//       role: "owner",
-//     });
-//     res.status(201).json({
-//       _id: admin.id,
-//       admin_name: admin.admin_name,
-//       email: admin.email,
-//       role: admin.role,
-//     });
-//   } catch (error) {
-//     if (error.message.match(/(email|password|name|role)/gi)) {
-//       return res.status(400).send(error.message);
-//     }
+const createFirstAdmin = async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const admin = await Admin.create({
+      admin_name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+      role: "owner",
+    });
+    res.status(201).json({
+      _id: admin.id,
+      admin_name: admin.admin_name,
+      email: admin.email,
+      role: admin.role,
+    });
+  } catch (error) {
+    console.error(error);
+    if (error.message.match(/(email|password|name|role)/gi)) {
+      return res.status(400).send(error.message);
+    }
 
-//     res.status(500).send("Ooops!! Something Went Wrong, Try again...");
-//   }
-// };
+    res.status(500).send("Ooops!! Something Went Wrong, Try again...");
+  }
+};
 
 //@desc   >>>> UPDATE Admin
 //@route  >>>> PUT /api/admins/:id
@@ -227,7 +231,7 @@ module.exports = {
   getAdmins,
   getOneAdmin,
   createAdmin,
-  // createFirstAdmin,
+  createFirstAdmin,
   adminLogin,
   updateAdmin,
   updateOwner,

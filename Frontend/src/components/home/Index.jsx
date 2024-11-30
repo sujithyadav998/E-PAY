@@ -31,9 +31,9 @@ export const Index = () => {
     <>
       <Navbar />
       <Hero />
-      <Motivation />
+      {/* <Motivation />
       <Reviews />
-      <Footer />
+      <Footer /> */}
       <ScrollToTopBtn startAnimation={startAnimation} />
     </>
   );

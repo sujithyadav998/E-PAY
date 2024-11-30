@@ -14,7 +14,7 @@ export const Logo = ({ textSize = null, bg = true }) => {
           textSize ? textSize : "text-3xl"
         } p-1  text-blue-800 font-bold `}
       >
-        E-BANK
+        E-PAY
       </span>
     </div>
   );

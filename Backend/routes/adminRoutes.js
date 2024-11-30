@@ -49,6 +49,6 @@ router
   .put(authAdminProtect, checkPassword, validatePassword, updateOwner);
 
 //Comment/Remove This Route after creating the first owner
-// router.route("/owner/create").post(createFirstAdmin);
+router.route("/owner/create").post(createFirstAdmin);
 
 module.exports = router;

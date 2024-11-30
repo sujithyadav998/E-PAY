@@ -55,16 +55,21 @@ export const Transfer = () => {
       setMsg(message);
     }
 
-    if (isSuccess) {
-      setMsg(
-        `You Have Transfered ${new Intl.NumberFormat("ar-EG", {
-          style: "currency",
-          currency: "EGP",
-        }).format(
-          balanceTransfered
-        )} To Account ID:- [${receivingId}] Successfully!`
-      );
+    if (isSuccess ) {
+      if(balanceTransfered < 5000)
+      {
+        setMsg(
+          `You Have Transfered ${
+            balanceTransfered
+          } To Account ID:- [${receivingId}] Successfully!`
+        );
+      }
+      else{
+        setMsg("Sent to parent for approval");
+      }
+     
     }
+   
   }, [isError, isSuccess, message, account, msg]);
 
   UseResetStatus(() => {

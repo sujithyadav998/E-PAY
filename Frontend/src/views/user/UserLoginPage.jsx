@@ -24,7 +24,7 @@ export const UserLoginPage = () => {
 
       <div className="w-[70%] self-stretch hidden lg:flex justify-center items-center flex-col p-6 bg-slate-50/60 rounded-lg shadow">
         <h2 className="w-full p-6 text-center text-3xl !font-sans font-bold text-teal-600 italic bg-white border-y-4 border-blue-800 rounded shadow">
-          E-bank is Everything You Need Now!
+           E-PAY is Everything You Need Now!
         </h2>
         <LoginImg className="max-w-md self-stretch h-full mx-auto" />
       </div>

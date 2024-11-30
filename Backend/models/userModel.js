@@ -36,6 +36,18 @@ const userSchema = new mongoose.Schema(
         message: "Please Enter A Valid Email!",
       },
     },
+    parentemail: {
+      type: String,
+      required: [true, "Please Type An Email!"],
+      unique: true,
+      validate: {
+        validator: function (v) {
+          let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+          return regex.test(v);
+        },
+        message: "Please Enter A Valid Email!",
+      },
+    },
     password: {
       type: String,
       required: [true, "Please Type A Password!"],

@@ -42,6 +42,7 @@ const sendNotification = async (req, res) => {
         notifications: updatedUser.notifications,
       });
     } catch (error) {
+      console.log(error);
       if (error.message.match(/(notification)/gi)) {
         return res.status(400).send(error.message);
       }

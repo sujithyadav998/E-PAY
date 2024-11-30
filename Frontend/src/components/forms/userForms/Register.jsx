@@ -22,6 +22,7 @@ export default function Register() {
     address: "",
     postCode: "",
     msg: "",
+    parentemail: ""
   });
 
   const {
@@ -34,6 +35,7 @@ export default function Register() {
     firstName,
     repeatPassword,
     msg,
+    parentemail,
   } = formInputs;
 
   const navigate = useNavigate();
@@ -73,6 +75,7 @@ export default function Register() {
     const userData = {
       name: `${firstName.trim()} ${lastName.trim()}`,
       email: email.trim(),
+      parentemail: parentemail.trim(),
       phone: phone.trim(),
       postal: postCode.trim(),
       addresse: address.trim(),
@@ -148,6 +151,27 @@ export default function Register() {
             defaultValue={email}
             onChange={(e) =>
               setFormInputs({ ...formInputs, email: e.target.value })
+            }
+            className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Type Your Email Address"
+            required
+          />
+        </div>
+
+        <div className="relative z-0 w-full mb-6">
+          <label
+            htmlFor="email"
+            className="w-full inline-block font-semibold mb-4 p-2 text-gray-800 border-b-4 border-blue-800 rounded shadow bg-blue-200"
+          >
+            Parent Email address
+          </label>
+
+          <input
+            type="email"
+            name="parentemail"
+            defaultValue={parentemail}
+            onChange={(e) =>
+              setFormInputs({ ...formInputs, parentemail: e.target.value })
             }
             className="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Type Your Email Address"

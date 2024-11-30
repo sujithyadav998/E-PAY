@@ -18,12 +18,12 @@ export default function Hero() {
                   </span>{" "}
                   Your Banking Experience with{" "}
                   <span className="bg-indigo-600 text-white rounded px-2">
-                    E-Bank!
+                    E-Pay!
                   </span>
                 </h1>
 
                 <p className="text-gray-700 !font-sans text-sm md:text-base lg:text-lg leading-5 my-5 drop-shadow">
-                  Take your financial life online. Your E-Bank account will be a
+                  Take your financial life online. Your E-Pay account will be a
                   one-stop-shop for sending, saving, budgeting, withdrawing, and
                   much more.
                 </p>

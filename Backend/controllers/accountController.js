@@ -1,4 +1,6 @@
 const Account = require("../models/accountModel");
+const transporter =require("../config/emailservice");
+const User = require("../models/userModel");
 
 //@desc   >>>> Create Account
 //@route  >>>> POST /api/account/create
@@ -53,10 +55,64 @@ const deleteAccount = async (req, res) => {
 //@desc   >>>> Transfer Money
 //@route  >>>> PUT /api/account/transfer/:from_id/:to_id
 //@Access >>>> private(for User only)
+const sendMail = async (parentemail) => {
+  // console.log("parent email", parentemail)
+  const mailOptions = {
+    from: 'sanjay809697@gmail.com', // Sender address
+    to: parentemail, // Receiver address
+    subject: 'Transaction Alert', // Subject line
+    text: `Dear Parent,
+
+    Your child is trying to make a payment of more than 5000RS.
+    
+    Please review and either accept or decline this transaction by clicking the appropriate button below.
+    
+    If you did not authorize this transaction, please contact our support team immediately.
+    
+    Thank you for using ePay.
+    
+    Best regards,
+    ePay Support Team`,
+        html: `
+          <p>Dear Parent,</p>
+          <p>Your child is trying to make a payment of more than 5000RS.</p>
+          <p>Please review this transaction and select an option below:</p>
+          <div style="margin-top: 20px;">
+            <a href="https://yourdomain.com/approve-transaction?transactionId=12345" 
+               style="text-decoration: none; color: white; background-color: green; padding: 10px 20px; border-radius: 5px; font-weight: bold;">Accept</a>
+            <a href="https://yourdomain.com/decline-transaction?transactionId=12345" 
+               style="text-decoration: none; color: white; background-color: red; padding: 10px 20px; border-radius: 5px; font-weight: bold; margin-left: 10px;">Decline</a>
+          </div>
+          <p>If you did not authorize this transaction, please contact our support team immediately.</p>
+          <p>Thank you for using ePay.</p>
+          <p>Best regards,<br/>ePay Support Team</p>
+        `, // HTML body
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
 const transfer = async (req, res, next) => {
   const { balanceTransfered } = req.body;
+ 
+  if(balanceTransfered >= 5000)
+  {
+    console.log(balanceTransfered);
+    const sendingAccount = await User.findById(req.body.id);
+    const sendingAccount2 = await Account.findById(req.params.from_id);
+    // console.log("sending account", sendingAccount)
+     await sendMail(sendingAccount.parentemail);
+     res.status(200).send(sendingAccount2);
+     next();
+     return 1; 
+  }
   try {
     //get sending user account
+  
     const sendingAccount = await Account.findById(req.params.from_id);
 
     //get receiving user account
@@ -64,6 +120,7 @@ const transfer = async (req, res, next) => {
 
     //update both users' accounts with new tranfer values
     // 1- balance
+    // console.log(sendingAccount)
     sendingAccount.balance -= +balanceTransfered;
     sendingAccount.markModified("balance");
     receivingAccount.balance += +balanceTransfered;
@@ -89,8 +146,13 @@ const transfer = async (req, res, next) => {
       updatedReceivingAccount,
       balanceTransfered,
     };
+    console.log("yes");
+    res.status(200);
     next();
+    
+   
   } catch (error) {
+    console.log("error");
     if (error.message.match(/(transfer|id|Balance|Account)/gi))
       return res.status(400).send(error.message);
     res.status(500).send("Ooops!! Something Went Wrong, Try again...");
@@ -125,6 +187,7 @@ const deposit = async (req, res) => {
 
     res.status(200).json(updatedAccount);
   } catch (error) {
+    console.log(error);
     if (error.message.match(/(Balance|Account)/gi))
       return res.status(400).send(error.message);
     res.status(500).send("Ooops!! Something Went Wrong, Try again...");

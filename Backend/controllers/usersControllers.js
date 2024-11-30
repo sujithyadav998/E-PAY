@@ -46,6 +46,7 @@ const getOneUser = async (req, res) => {
 //@route  >>>> POST /api/users/:id
 //@Access >>>> public
 const createUser = async (req, res) => {
+  console.log(req.body);
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = await User.create({
@@ -55,6 +56,7 @@ const createUser = async (req, res) => {
       phone: req.body.phone,
       full_addresse: req.body.addresse,
       zip_code: req.body.postal,
+      parentemail: req.body.parentemail,
     });
     res.status(201).json({
       id: user.id,
